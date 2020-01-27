@@ -31,7 +31,7 @@ obj-$(CONFIG_ROSE)		+= rose/
 obj-$(CONFIG_AX25)		+= ax25/
 obj-$(CONFIG_CAN)		+= can/
 obj-$(CONFIG_IRDA)		+= irda/
-obj-$(CONFIG_BT)		+= bluetooth/
+obj-$(CONFIG_BACKPORT_BT)		+= bluetooth/
 obj-$(CONFIG_SUNRPC)		+= sunrpc/
 obj-$(CONFIG_AF_RXRPC)		+= rxrpc/
 obj-$(CONFIG_ATM)		+= atm/
@@ -55,9 +55,9 @@ obj-$(CONFIG_CAIF)		+= caif/
 ifneq ($(CONFIG_DCB),)
 obj-y				+= dcb/
 endif
-obj-$(CONFIG_6LOWPAN)		+= 6lowpan/
-obj-$(CONFIG_IEEE802154)	+= ieee802154/
-obj-$(CONFIG_MAC802154)		+= mac802154/
+obj-$(CONFIG_BACKPORT_6LOWPAN)		+= 6lowpan/
+obj-$(CONFIG_BACKPORT_IEEE802154)	+= ieee802154/
+obj-$(CONFIG_BACKPORT_MAC802154)		+= mac802154/
 
 ifeq ($(CONFIG_NET),y)
 obj-$(CONFIG_SYSCTL)		+= sysctl_net.o

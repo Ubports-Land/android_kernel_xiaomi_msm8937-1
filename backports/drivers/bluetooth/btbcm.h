@@ -64,7 +64,7 @@ struct bcm_set_pcm_format_params {
 	__u8 right_justify;
 } __packed;
 
-#if IS_ENABLED(CONFIG_BT_BCM)
+#if IS_ENABLED(CONFIG_BACKPORT_BT_BCM)
 
 int btbcm_check_bdaddr(struct hci_dev *hdev);
 int btbcm_set_bdaddr(struct hci_dev *hdev, const bdaddr_t *bdaddr);

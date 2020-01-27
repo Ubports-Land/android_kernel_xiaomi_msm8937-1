@@ -365,7 +365,7 @@ extern struct dentry *bt_debugfs;
 int l2cap_init(void);
 void l2cap_exit(void);
 
-#if IS_ENABLED(CONFIG_BT_BREDR)
+#if IS_ENABLED(CONFIG_BACKPORT_BT_BREDR)
 int sco_init(void);
 void sco_exit(void);
 #else

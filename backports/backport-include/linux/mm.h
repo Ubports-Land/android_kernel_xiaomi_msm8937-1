@@ -51,7 +51,7 @@ long get_user_pages_unlocked(struct task_struct *tsk, struct mm_struct *mm,
 #define FOLL_TRIED	0x800	/* a retry, previous pass started an IO */
 #endif
 
-#ifdef CPTCFG_BPAUTO_BUILD_FRAME_VECTOR
+#ifdef CONFIG_BACKPORT_BPAUTO_BUILD_FRAME_VECTOR
 /* Container for pinned pfns / pages */
 struct frame_vector {
 	unsigned int nr_allocated;	/* Number of frames we have space for */
