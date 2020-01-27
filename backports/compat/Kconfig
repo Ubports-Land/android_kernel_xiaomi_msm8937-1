@@ -54,6 +54,7 @@
 #
 
 config BPAUTO_BUILD_CORDIC
+	depends on n
 	tristate
 	depends on !CORDIC
 	default m if BPAUTO_CORDIC
@@ -65,6 +66,7 @@ config BPAUTO_CORDIC
 	bool
 
 config BPAUTO_BUILD_AVERAGE
+	depends on n
 	bool
 	depends on !AVERAGE
 	default y if BPAUTO_USERSEL_BUILD_ALL
@@ -146,6 +148,7 @@ config BPAUTO_RHASHTABLE
 	#c-file lib/rhashtable.c
 
 config BPAUTO_BUILD_HDMI
+	depends on n
 	bool
 	# the hdmi driver got some new apis like hdmi_infoframe_unpack() in
 	# kernel 4.0 which are used by some drivers
@@ -165,6 +168,7 @@ config BPAUTO_FRAME_VECTOR
 	bool
 
 config BPAUTO_BUILD_FRAME_VECTOR
+	depends on n
 	bool
 	default n if FRAME_VECTOR
 	default y if BPAUTO_FRAME_VECTOR
