@@ -713,6 +713,12 @@ static int sco_sock_sendmsg(struct socket *sock, struct msghdr *msg,
 	release_sock(sk);
 	return err;
 }
+#if LINUX_VERSION_CODE < KERNEL_VERSION(4,1,0)
+static int backport_sco_sock_sendmsg(struct kiocb *iocb, struct socket *sock,
+				     struct msghdr *msg, size_t len){
+	return sco_sock_sendmsg(sock, msg, len);
+}
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(4,1,0) */
 
 static void sco_conn_defer_accept(struct hci_conn *conn, u16 setting)
 {
@@ -779,6 +785,13 @@ static int sco_sock_recvmsg(struct socket *sock, struct msghdr *msg,
 
 	return bt_sock_recvmsg(sock, msg, len, flags);
 }
+#if LINUX_VERSION_CODE < KERNEL_VERSION(4,1,0)
+static int backport_sco_sock_recvmsg(struct kiocb *iocb, struct socket *sock,
+				     struct msghdr *msg, size_t len,
+				     int flags){
+	return sco_sock_recvmsg(sock, msg, len, flags);
+}
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(4,1,0) */
 
 static int sco_sock_setsockopt(struct socket *sock, int level, int optname, char __user *optval, unsigned int optlen)
 {
@@ -1177,8 +1190,18 @@ static const struct proto_ops sco_sock_ops = {
 	.listen		= sco_sock_listen,
 	.accept		= sco_sock_accept,
 	.getname	= sco_sock_getname,
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4,1,0)
 	.sendmsg	= sco_sock_sendmsg,
+#else
+	.sendmsg = backport_sco_sock_sendmsg,
+#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(4,1,0) */
+
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4,1,0)
 	.recvmsg	= sco_sock_recvmsg,
+#else
+	.recvmsg = backport_sco_sock_recvmsg,
+#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(4,1,0) */
+
 	.poll		= bt_sock_poll,
 	.ioctl		= bt_sock_ioctl,
 	.mmap		= sock_no_mmap,

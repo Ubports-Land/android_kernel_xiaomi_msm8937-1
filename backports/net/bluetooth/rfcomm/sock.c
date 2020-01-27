@@ -626,6 +626,13 @@ done:
 
 	return sent;
 }
+#if LINUX_VERSION_CODE < KERNEL_VERSION(4,1,0)
+static int backport_rfcomm_sock_sendmsg(struct kiocb *iocb,
+					struct socket *sock,
+					struct msghdr *msg, size_t len){
+	return rfcomm_sock_sendmsg(sock, msg, len);
+}
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(4,1,0) */
 
 static int rfcomm_sock_recvmsg(struct socket *sock, struct msghdr *msg,
 			       size_t size, int flags)
@@ -651,6 +658,14 @@ static int rfcomm_sock_recvmsg(struct socket *sock, struct msghdr *msg,
 
 	return len;
 }
+#if LINUX_VERSION_CODE < KERNEL_VERSION(4,1,0)
+static int backport_rfcomm_sock_recvmsg(struct kiocb *iocb,
+					struct socket *sock,
+					struct msghdr *msg, size_t len,
+					int flags){
+	return rfcomm_sock_recvmsg(sock, msg, len, flags);
+}
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(4,1,0) */
 
 static int rfcomm_sock_setsockopt_old(struct socket *sock, int optname, char __user *optval, unsigned int optlen)
 {
@@ -1048,8 +1063,18 @@ static const struct proto_ops rfcomm_sock_ops = {
 	.listen		= rfcomm_sock_listen,
 	.accept		= rfcomm_sock_accept,
 	.getname	= rfcomm_sock_getname,
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4,1,0)
 	.sendmsg	= rfcomm_sock_sendmsg,
+#else
+	.sendmsg = backport_rfcomm_sock_sendmsg,
+#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(4,1,0) */
+
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4,1,0)
 	.recvmsg	= rfcomm_sock_recvmsg,
+#else
+	.recvmsg = backport_rfcomm_sock_recvmsg,
+#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(4,1,0) */
+
 	.shutdown	= rfcomm_sock_shutdown,
 	.setsockopt	= rfcomm_sock_setsockopt,
 	.getsockopt	= rfcomm_sock_getsockopt,
