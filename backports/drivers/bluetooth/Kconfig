@@ -16,6 +16,16 @@ config BACKPORT_BT_RTL
 	depends on !BT_RTL
 	depends on FW_LOADER
 
+config BACKPORT_BT_HCISMD
+ 	tristate "HCI SMD driver"
+    help
+ 	  Bluetooth HCI SMD driver.
+           This driver is required if you want to use Bluetoth device with
+ 	  SMD interface.
+
+ 	  Say Y here to compile support for Bluetooth USB devices into the
+           kernel or say M to compile is as a module (hci_smd).
+
 config BACKPORT_BT_HCIBTUSB
 	tristate "HCI USB driver"
 	depends on !BT_HCIBTUSB
