@@ -23,6 +23,7 @@ obj-$(CONFIG_BACKPORT_BT_MRVL_SDIO)	+= btmrvl_sdio.o
 obj-$(CONFIG_BACKPORT_BT_WILINK)		+= btwilink.o
 obj-$(CONFIG_BACKPORT_BT_BCM)		+= btbcm.o
 obj-$(CONFIG_BACKPORT_BT_RTL)		+= btrtl.o
+obj-$(CONFIG_BACKPORT_MSM_BT_POWER)	+= bluetooth-power.o
 
 btmrvl-y			:= btmrvl_main.o
 btmrvl-$(CONFIG_DEBUG_FS)	+= btmrvl_debugfs.o
