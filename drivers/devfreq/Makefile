@@ -8,6 +8,8 @@ obj-$(CONFIG_DEVFREQ_GOV_POWERSAVE)	+= governor_powersave.o
 obj-$(CONFIG_DEVFREQ_GOV_USERSPACE)	+= governor_userspace.o
 obj-$(CONFIG_DEVFREQ_GOV_CPUFREQ)	+= governor_cpufreq.o
 obj-$(CONFIG_DEVFREQ_GOV_MSM_ADRENO_TZ)	+= governor_msm_adreno_tz.o
+obj-$(CONFIG_SIMPLE_GPU_ALGORITHM)	+= simple_gpu_algorithm.o
+obj-$(CONFIG_ADRENO_IDLER)		+= adreno_idler.o
 obj-$(CONFIG_MSM_BIMC_BWMON)		+= bimc-bwmon.o
 obj-$(CONFIG_ARMBW_HWMON)		+= armbw-pm.o
 obj-$(CONFIG_ARM_MEMLAT_MON)		+= arm-memlat-mon.o
@@ -26,3 +28,6 @@ obj-$(CONFIG_ARM_EXYNOS5_BUS_DEVFREQ)	+= exynos/
 obj-$(CONFIG_MSM_DEVFREQ_DEVBW)		+= devfreq_devbw.o
 obj-$(CONFIG_DEVFREQ_SIMPLE_DEV)	+= devfreq_simple_dev.o
 obj-$(CONFIG_DEVFREQ_SPDM) 		+= devfreq_spdm.o devfreq_spdm_debugfs.o
+
+# DEVFREQ Boost
+obj-$(CONFIG_DEVFREQ_BOOST)		+= devfreq_boost.o

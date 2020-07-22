@@ -1,4 +1,4 @@
-/* Copyright (c) 2012-2017, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2012-2018, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -178,7 +178,7 @@ struct mdp_csc_cfg mdp_csc_10bit_convert[MDSS_MDP_MAX_CSC] = {
 			0x0254, 0xff37, 0xfe60,
 			0x0254, 0x0409, 0x0000,
 		},
-		{ 0xffc0, 0xffe0, 0xffe0,},
+		{ 0xffc0, 0xfe00, 0xfe00,},
 		{ 0x0, 0x0, 0x0,},
 		{ 0x40, 0x3ac, 0x40, 0x3c0, 0x40, 0x3c0,},
 		{ 0x0, 0x3ff, 0x0, 0x3ff, 0x0, 0x3ff,},
@@ -190,7 +190,7 @@ struct mdp_csc_cfg mdp_csc_10bit_convert[MDSS_MDP_MAX_CSC] = {
 			0x0200, 0xff50, 0xfe92,
 			0x0200, 0x038b, 0x0000,
 		},
-		{ 0x0000, 0xffe0, 0xffe0,},
+		{ 0x0000, 0xfe00, 0xfe00,},
 		{ 0x0, 0x0, 0x0,},
 		{ 0x0, 0x3ff, 0x0, 0x3ff, 0x0, 0x3ff,},
 		{ 0x0, 0x3ff, 0x0, 0x3ff, 0x0, 0x3ff,},
@@ -497,6 +497,7 @@ static u32 igc_limited[IGC_LUT_ENTRIES] = {
 
 static struct mdp_pp_driver_ops pp_driver_ops;
 static struct mdp_pp_feature_ops *pp_ops;
+
 
 static DEFINE_MUTEX(mdss_pp_mutex);
 static struct mdss_pp_res_type *mdss_pp_res;
@@ -1576,11 +1577,16 @@ int mdss_mdp_scaler_lut_cfg(struct mdp_scale_data_v2 *scaler,
 	};
 
 	mdata = mdss_mdp_get_mdata();
+
+	mutex_lock(&mdata->scaler_off->scaler_lock);
+
 	lut_tbl = &mdata->scaler_off->lut_tbl;
 	if ((!lut_tbl) || (!lut_tbl->valid)) {
+		mutex_unlock(&mdata->scaler_off->scaler_lock);
 		pr_err("%s:Invalid QSEED3 LUT TABLE\n", __func__);
 		return -EINVAL;
 	}
+
 	if ((scaler->lut_flag & SCALER_LUT_DIR_WR) ||
 		(scaler->lut_flag & SCALER_LUT_Y_CIR_WR) ||
 		(scaler->lut_flag & SCALER_LUT_UV_CIR_WR) ||
@@ -1630,6 +1636,8 @@ int mdss_mdp_scaler_lut_cfg(struct mdp_scale_data_v2 *scaler,
 	if (scaler->lut_flag & SCALER_LUT_SWAP)
 		writel_relaxed(BIT(0), MDSS_MDP_REG_SCALER_COEF_LUT_CTRL +
 				offset);
+
+	mutex_unlock(&mdata->scaler_off->scaler_lock);
 
 	return 0;
 }
@@ -2737,6 +2745,8 @@ int mdss_mdp_pp_resume(struct msm_fb_data_type *mfd)
 					& MDP_PP_OPS_DISABLE))
 			mdss_pp_res->gamut_disp_cfg[disp_num].flags |=
 				MDP_PP_OPS_WRITE;
+
+	
 	}
 	if (pp_sts.pgc_sts & PP_STS_ENABLE) {
 		flags |= PP_FLAGS_DIRTY_PGC;
@@ -2901,8 +2911,8 @@ static int mdss_mdp_pp_dt_parse(struct device *dev)
 	}
 bail_out:
 	return ret;
-}
 
+}
 int mdss_mdp_pp_init(struct device *dev)
 {
 	int i, ret = 0;
@@ -6645,7 +6655,7 @@ static int is_valid_calib_dspp_addr(char __iomem *ptr)
 			ret = MDP_PP_OPS_READ | MDP_PP_OPS_WRITE;
 			break;
 		/* Dither enable/disable */
-		} else if ((ptr == base + MDSS_MDP_REG_DSPP_DITHER_DEPTH)) {
+		} else if (ptr == base + MDSS_MDP_REG_DSPP_DITHER_DEPTH) {
 			ret = MDP_PP_OPS_READ | MDP_PP_OPS_WRITE;
 			break;
 		/* Six zone and mem color */

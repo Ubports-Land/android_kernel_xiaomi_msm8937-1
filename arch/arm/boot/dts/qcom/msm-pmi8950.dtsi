@@ -1,4 +1,4 @@
-/* Copyright (c) 2015-2016, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2015-2017, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -203,19 +203,15 @@
 			#size-cells = <1>;
 
 			qcom,iterm-ma = <100>;
-			qcom,float-voltage-mv = <4200>;
 			qcom,resume-delta-mv = <200>;
 			qcom,chg-inhibit-fg;
 			qcom,rparasitic-uohm = <100000>;
 			qcom,bms-psy-name = "bms";
-			qcom,thermal-mitigation = <1500 700 600 0>;
-			qcom,parallel-usb-min-current-ma = <1400>;
-			qcom,parallel-usb-9v-min-current-ma = <900>;
-			qcom,parallel-allowed-lowering-ma = <500>;
+			qcom,fastchg-current-ma = <3000>;
+			qcom,thermal-mitigation = <1500 700 600 325>;
 			qcom,pmic-revid = <&pmi8950_revid>;
 			qcom,force-aicl-rerun;
 			qcom,aicl-rerun-period-s = <180>;
-			qcom,autoadjust-vfloat;
 
 			qcom,chgr@1000 {
 				reg = <0x1000 0x100>;
@@ -324,7 +320,8 @@
 			qcom,fg-iterm-ma = <150>;
 			qcom,fg-chg-iterm-ma = <100>;
 			qcom,pmic-revid = <&pmi8950_revid>;
-			qcom,fg-cutoff-voltage-mv = <3500>;
+			qcom,fg-cutoff-voltage-mv = <3400>;
+			qcom,fg-cc-cv-threshold-mv = <4390>;
 			qcom,cycle-counter-en;
 			qcom,capacity-learning-on;
 
@@ -564,7 +561,7 @@
 				qcom,max-current = <1000>;
 				qcom,duration = <1280>;
 				qcom,id = <0>;
-				qcom,current = <625>;
+				qcom,current = <595>;
 			};
 
 			pmi8950_flash1: qcom,flash_1 {
@@ -575,7 +572,7 @@
 				qcom,max-current = <1000>;
 				qcom,duration = <1280>;
 				qcom,id = <1>;
-				qcom,current = <625>;
+				qcom,current = <595>;
 			};
 
 			pmi8950_torch0: qcom,torch_0 {
@@ -585,7 +582,7 @@
 						"torch0_trigger";
 				qcom,max-current = <200>;
 				qcom,id = <0>;
-				qcom,current = <120>;
+				qcom,current = <100>;
 			};
 
 			pmi8950_torch1: qcom,torch_1 {
@@ -595,7 +592,7 @@
 						"torch1_trigger";
 				qcom,max-current = <200>;
 				qcom,id = <1>;
-				qcom,current = <120>;
+				qcom,current = <100>;
 			};
 
 			pmi8950_torch2: qcom,torch_2 {
@@ -629,12 +626,13 @@
 			interrupts = <0x3 0xc0 0x0>,
 					<0x3 0xc0 0x1>;
 			interrupt-names = "sc-irq", "play-irq";
+			qcom,pmic-revid = <&pmi8950_revid>;
 			vcc_pon-supply = <&pon_perph_reg>;
 			qcom,play-mode = "direct";
 			qcom,wave-play-rate-us = <5263>;
 			qcom,actuator-type = "erm";
 			qcom,wave-shape = "square";
-			qcom,vmax-mv = <2000>;
+			qcom,vmax-mv = <2700>;
 			qcom,ilim-ma = <800>;
 			qcom,sc-deb-cycles = <8>;
 			qcom,int-pwm-freq-khz = <505>;

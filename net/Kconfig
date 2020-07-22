@@ -87,6 +87,7 @@ config INET
 	  Short answer: say Y.
 
 if INET
+source "net/wireguard/Kconfig"
 source "net/ipv4/Kconfig"
 source "net/ipv6/Kconfig"
 source "net/netlabel/Kconfig"
@@ -95,8 +96,7 @@ endif # if INET
 
 config ANDROID_PARANOID_NETWORK
 	bool "Only allow certain groups to create sockets"
-	default y
-	select SECURITY_ANDROID_GID_CAPABILITIES
+	default ANDROID
 	help
 		none
 

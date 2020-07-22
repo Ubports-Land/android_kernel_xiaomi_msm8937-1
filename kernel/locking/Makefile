@@ -1,3 +1,6 @@
+# Any varying coverage in these files is non-deterministic
+# and is generally not a function of system call inputs.
+KCOV_INSTRUMENT		:= n
 
 obj-y += mutex.o semaphore.o rwsem.o mcs_spinlock.o
 
@@ -26,3 +29,5 @@ obj-$(CONFIG_RWSEM_XCHGADD_ALGORITHM) += rwsem-xadd.o
 obj-$(CONFIG_PERCPU_RWSEM) += percpu-rwsem.o
 obj-$(CONFIG_QUEUE_RWLOCK) += qrwlock.o
 obj-$(CONFIG_LOCK_TORTURE_TEST) += locktorture.o
+
+subdir-ccflags-y := $(call cc-disable-warning, gcc-compat)

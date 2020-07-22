@@ -25,7 +25,6 @@ static void power_supply_update_bat_leds(struct power_supply *psy)
 
 	if (psy->get_property(psy, POWER_SUPPLY_PROP_STATUS, &status))
 		return;
-
 	if (psy->get_property(psy, POWER_SUPPLY_PROP_CAPACITY, &bat_percent))
 		return;
 

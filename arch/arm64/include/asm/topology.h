@@ -1,8 +1,6 @@
 #ifndef __ASM_TOPOLOGY_H
 #define __ASM_TOPOLOGY_H
 
-#ifdef CONFIG_SMP
-
 #include <linux/cpumask.h>
 
 struct cpu_topology {
@@ -23,13 +21,22 @@ extern struct cpu_topology cpu_topology[NR_CPUS];
 void init_cpu_topology(void);
 void store_cpu_topology(unsigned int cpuid);
 const struct cpumask *cpu_coregroup_mask(int cpu);
+unsigned long arch_get_cpu_efficiency(int cpu);
 
-#else
-
-static inline void init_cpu_topology(void) { }
-static inline void store_cpu_topology(unsigned int cpuid) { }
-
+struct sched_domain;
+#ifdef CONFIG_CPU_FREQ
+#define arch_scale_freq_capacity cpufreq_scale_freq_capacity
+extern unsigned long cpufreq_scale_freq_capacity(struct sched_domain *sd, int cpu);
+#define arch_scale_max_freq_capacity cpufreq_scale_max_freq_capacity
+extern unsigned long cpufreq_scale_max_freq_capacity(struct sched_domain *sd, int cpu);
+#define arch_scale_min_freq_capacity cpufreq_scale_min_freq_capacity
+extern unsigned long cpufreq_scale_min_freq_capacity(struct sched_domain *sd, int cpu);
 #endif
+#define arch_scale_cpu_capacity scale_cpu_capacity
+extern unsigned long scale_cpu_capacity(struct sched_domain *sd, int cpu);
+
+#define arch_update_cpu_capacity update_cpu_power_capacity
+extern void update_cpu_power_capacity(int cpu);
 
 #include <asm-generic/topology.h>
 

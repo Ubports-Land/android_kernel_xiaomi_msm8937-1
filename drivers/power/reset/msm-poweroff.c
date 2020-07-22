@@ -1,5 +1,4 @@
 /* Copyright (c) 2013-2017, The Linux Foundation. All rights reserved.
- * Copyright (C) 2016 XiaoMi, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -265,17 +264,6 @@ static void halt_spmi_pmic_arbiter(void)
 	}
 }
 
-static bool device_locked_flag;
-static int __init device_locked(char *str)
-{
-	if (strcmp(str, "1"))
-		device_locked_flag = false;
-	else
-		device_locked_flag = true;
-	return 1;
-}
-__setup("device_locked=", device_locked);
-
 static void msm_restart_prepare(const char *cmd)
 {
 	bool need_warm_reset = false;
@@ -303,9 +291,10 @@ static void msm_restart_prepare(const char *cmd)
 				strcmp(cmd, "userrequested")));
 	}
 
-#ifdef CONFIG_MSM_PRESERVE_MEM
+
+	/* To preserve console-ramoops */
 	need_warm_reset = true;
-#endif
+//>>>>>>> 43d728f7e8d7... power: reset: msm: Always perform warm reset
 
 	/* Hard reset the PMIC unless memory contents must be maintained. */
 	if (need_warm_reset) {
@@ -348,7 +337,7 @@ static void msm_restart_prepare(const char *cmd)
 			if (!ret)
 				__raw_writel(0x6f656d00 | (code & 0xff),
 					     restart_reason);
-		} else if (!strncmp(cmd, "edl", 3) && !device_locked_flag) {
+		} else if (!strncmp(cmd, "edl", 3)) {
 			enable_emergency_dload_mode();
 		} else {
 			__raw_writel(0x77665501, restart_reason);
