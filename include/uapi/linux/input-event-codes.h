@@ -200,7 +200,7 @@
 #define KEY_HANGUEL		KEY_HANGEUL
 #define KEY_HANJA		123
 #define KEY_YEN			124
-#define KEY_LEFTMETA		125
+#define KEY_LEFTMETA		0x244
 #define KEY_RIGHTMETA		126
 #define KEY_COMPOSE		127
 
@@ -597,7 +597,7 @@
 #define KEY_TASKMANAGER		0x241	/* AL Task/Project Manager */
 #define KEY_JOURNAL		0x242	/* AL Log/Journal/Timecard */
 #define KEY_CONTROLPANEL		0x243	/* AL Control Panel */
-#define KEY_APPSELECT		0x244	/* AL Select Task/Application */
+#define KEY_APPSELECT		125	/* AL Select Task/Application */
 #define KEY_SCREENSAVER		0x245	/* AL Screen Saver */
 #define KEY_VOICECOMMAND		0x246	/* Listening Voice Command */
 
