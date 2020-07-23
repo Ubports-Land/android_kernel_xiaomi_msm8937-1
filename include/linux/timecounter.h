@@ -17,5 +17,5 @@
 #ifndef _LINUX_TIMECOUNTER_H
 #define _LINUX_TIMECOUNTER_H
 
-#include <Linux/clocksource.h>
+#include <linux/clocksource.h>
 #endif
